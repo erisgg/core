@@ -1,0 +1,8 @@
+name: ErisCore
+version: 1.0
+main: gg.eris.core.ErisCore
+description: Core plugin for eris.gg
+authors: [AJFS Tech, Alfie Smith]
+website: eris.gg
+depend: [ErisCommons]
+
