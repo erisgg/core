@@ -10,7 +10,7 @@ import gg.eris.core.command.gamemode.GamemodeCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ErisCore extends JavaPlugin {
+public final class ErisCore extends JavaPlugin {
 
   @Override
   public void onEnable() {
