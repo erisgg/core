@@ -8,7 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 // TODO: messages
-public class GameModeCreativeCommand extends SpecificGamemodeCommand {
+public final class GameModeCreativeCommand extends SpecificGamemodeCommand {
 
   @Override
   public String getLabel() {

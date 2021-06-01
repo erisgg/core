@@ -7,7 +7,7 @@ import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import org.bukkit.entity.Player;
 
 // todo: messages
-public class TeleportCommand implements CommandProvider {
+public final class TeleportCommand implements CommandProvider {
 
   @Override
   public Builder getCommand(CommandManager manager) {

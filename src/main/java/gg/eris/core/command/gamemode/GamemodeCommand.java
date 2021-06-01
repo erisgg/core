@@ -10,7 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 // TODO: messages
-public class GamemodeCommand implements CommandProvider {
+public final class GamemodeCommand implements CommandProvider {
 
   public static final String PERMISSION = "gamemode";
 

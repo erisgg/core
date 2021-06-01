@@ -2,7 +2,7 @@ package gg.eris.core.command.gamemode;
 
 import org.bukkit.GameMode;
 
-public class GameModeSurvivalCommand extends SpecificGamemodeCommand {
+public final class GameModeSurvivalCommand extends SpecificGamemodeCommand {
 
   @Override
   public String getLabel() {
