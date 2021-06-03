@@ -1,6 +1,7 @@
 package gg.eris.core;
 
 import gg.eris.commons.bukkit.ErisBukkitCommons;
+import gg.eris.core.command.BroadcastCommand;
 import gg.eris.core.command.TeleportCommand;
 import gg.eris.core.command.gamemode.GameModeAdventureCommand;
 import gg.eris.core.command.gamemode.GameModeCreativeCommand;
@@ -22,7 +23,8 @@ public final class ErisCore extends JavaPlugin {
         new GameModeSurvivalCommand(),
         new GameModeCreativeCommand(),
         new GameModeAdventureCommand(),
-        new GameModeSpectatorCommand()
+        new GameModeSpectatorCommand(),
+        new BroadcastCommand()
     );
   }
 
