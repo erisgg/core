@@ -23,7 +23,7 @@ public class BroadcastCommand implements CommandProvider {
                 "broadcast",
                 "broadcasts a message to all players",
                 PERMISSION,
-                "" //TODO add any aliases
+                "bc"
         ).noArgsHandler(context -> {
             System.out.println("no args handler is called");
             context.getCommandSender().sendMessage("Bad usage");
