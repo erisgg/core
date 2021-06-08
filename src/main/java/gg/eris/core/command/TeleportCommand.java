@@ -4,17 +4,21 @@ import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
+import gg.eris.commons.core.identifier.Identifier;
+import gg.eris.commons.core.identifier.IdentifierProvider;
 import org.bukkit.entity.Player;
 
 // todo: messages
 public final class TeleportCommand implements CommandProvider {
+
+    public static final Identifier PERMISSION = Identifier.of("eris", "teleport");
 
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
         "teleport",
         "teleport players",
-        "teleport",
+        PERMISSION,
         "tp"
     ).noArgsHandler(context -> {
       System.out.println("no args handler is called");

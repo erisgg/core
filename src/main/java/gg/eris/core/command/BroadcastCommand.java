@@ -3,11 +3,10 @@ package gg.eris.core.command;
 import gg.eris.commons.bukkit.command.Command;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
-import gg.eris.commons.bukkit.command.argument.LiteralArgument;
-import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
+import gg.eris.commons.core.identifier.Identifier;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,7 +16,7 @@ import static gg.eris.commons.bukkit.text.TextController.builder;
 
 public class BroadcastCommand implements CommandProvider {
 
-    public static final String PERMISSION = "broadcast";
+    public static final Identifier PERMISSION = Identifier.of("eris", "broadcast");
 
     @Override
     public Command.Builder getCommand(CommandManager manager) {
