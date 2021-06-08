@@ -29,7 +29,7 @@ public class BroadcastCommand implements CommandProvider {
             System.out.println("no args handler is called");
             context.getCommandSender().sendMessage("Bad usage");
         }).withSubCommand()
-                .argument(StringArgument.of("message"))
+                .variableArgument(StringArgument.of("message"), 1)
                 .asPlayerOnly()
                 .handler(context -> {
                     String message = context.getArgument("message");
