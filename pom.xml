@@ -17,6 +17,10 @@
       <name>Alfie Smith</name>
       <email>alfie@alfiesmith.net</email>
     </developer>
+    <developer>
+      <name>Hugh Johnson</name>
+      <email>hughjohnson2018@outlook.com</email>
+    </developer>
   </developers>
 
   <properties>
