@@ -10,9 +10,17 @@ import gg.eris.core.command.gamemode.GameModeSpectatorCommand;
 import gg.eris.core.command.gamemode.GameModeSurvivalCommand;
 import gg.eris.core.command.gamemode.GamemodeCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public final class ErisCore extends JavaPlugin {
+
+  public static HashMap<Player, BukkitTask> teleportHubList = new HashMap<>();
 
   @Override
   public void onEnable() {
