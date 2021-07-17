@@ -7,13 +7,15 @@ import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.core.ErisCoreIdentifiers;
 import java.util.Locale;
+
+import gg.eris.commons.core.identifier.Identifier;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 // TODO: messages
 public final class GamemodeCommand implements CommandProvider {
 
-  public static final String PERMISSION = "gamemode";
+  public static final Identifier PERMISSION = Identifier.of("eris", "gamemode");
 
   @Override
   public Builder getCommand(CommandManager manager) {

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 // todo: messages
 public final class TeleportCommand implements CommandProvider {
 
+
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
