@@ -1,9 +1,11 @@
 package gg.eris.core;
 
+import gg.eris.commons.bukkit.ErisBukkitCommons;
 import gg.eris.commons.bukkit.permission.Permission;
+import gg.eris.commons.bukkit.permission.PermissionRegistry;
 import gg.eris.commons.core.identifier.Identifier;
 import lombok.experimental.UtilityClass;
-import org.bukkit.Utility;
+import org.bukkit.Bukkit;
 
 @UtilityClass
 public final class ErisCoreIdentifiers {
@@ -12,7 +14,13 @@ public final class ErisCoreIdentifiers {
   public static final Identifier TELEPORT_PERMISSION = permission("teleport");
 
   private static Identifier permission(String name) {
-    return Permission.DEFAULT_IDENTIFIER_PROVIDER.id(name);
+    PermissionRegistry registry =
+        Bukkit.getServicesManager()
+            .getRegistration(ErisBukkitCommons.class)
+            .getProvider()
+            .getPermissionRegistry();
+
+    return registry.registerOfDefault(name).getIdentifier();
   }
 
 }
