@@ -4,6 +4,7 @@ import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
+import gg.eris.core.ErisCoreIdentifiers;
 import java.util.Locale;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -21,7 +22,7 @@ public abstract class SpecificGamemodeCommand implements CommandProvider {
     return manager.newCommandBuilder(
         getLabel(),
         "shorthand gamemode " + gameMode.name().toLowerCase(Locale.ROOT),
-        GamemodeCommand.PERMISSION
+        ErisCoreIdentifiers.GAMEMODE_PERMISSION
     ).noArgsHandler(context -> context.getSenderAsPlayer().setGameMode(gameMode), true)
         .withSubCommand().argument(PlayerArgument.of("who"))
         .handler(context -> {

@@ -5,6 +5,7 @@ import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
+import gg.eris.core.ErisCoreIdentifiers;
 import java.util.Locale;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public final class GamemodeCommand implements CommandProvider {
     return manager.newCommandBuilder(
         "gameMode",
         "sets gamemode",
-        PERMISSION,
+        ErisCoreIdentifiers.GAMEMODE_PERMISSION,
         "gm"
     ).noArgsHandler(handler -> {
       handler.getSenderAsPlayer().sendMessage("Bad usage");
