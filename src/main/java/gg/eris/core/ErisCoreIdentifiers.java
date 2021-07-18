@@ -20,7 +20,7 @@ public final class ErisCoreIdentifiers {
             .getProvider()
             .getPermissionRegistry();
 
-    return registry.registerOfDefault(name).getIdentifier();
+    return Permission.ofDefault(registry, name).getIdentifier();
   }
 
 }

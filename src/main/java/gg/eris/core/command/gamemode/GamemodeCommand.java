@@ -15,8 +15,6 @@ import org.bukkit.entity.Player;
 // TODO: messages
 public final class GamemodeCommand implements CommandProvider {
 
-  public static final Identifier PERMISSION = Identifier.of("eris", "gamemode");
-
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
