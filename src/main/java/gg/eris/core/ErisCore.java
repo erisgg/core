@@ -63,6 +63,7 @@ public final class ErisCore extends JavaPlugin {
           Player receiverPlayer = Bukkit.getPlayer(UUID.fromString(receiver));
 
           receiverPlayer.sendMessage(CC.GREEN.underline() + "FROM: " + CC.GOLD.underline() + sender + " " + CC.WHITE + message);
+          //TODO use text controller for this
         }).build();
         wrapper.subscribe(subscriber);
       }
