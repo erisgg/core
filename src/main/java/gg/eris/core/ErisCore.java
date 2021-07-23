@@ -86,6 +86,7 @@ public final class ErisCore extends JavaPlugin {
           }
 
         }).build();
+        wrapper.subscribe(subscriber);
       }
     });
   }
