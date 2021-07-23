@@ -3,6 +3,8 @@ package gg.eris.core;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.eris.commons.bukkit.ErisBukkitCommons;
+import gg.eris.commons.bukkit.text.TextController;
+import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.commons.bukkit.util.CC;
 import gg.eris.commons.core.redis.RedisSubscriber;
 import gg.eris.commons.core.redis.RedisWrapper;
@@ -41,13 +43,14 @@ public final class ErisCore extends JavaPlugin {
         new GameModeCreativeCommand(),
         new GameModeAdventureCommand(),
         new GameModeSpectatorCommand(),
-        new BroadcastCommand(),
+        new BroadcastCommand(wrapper),
         new HubCommand(),
         new MessageCommand(wrapper)
     );
 
 
     receiveMessages();
+    broadcastMessages();
   }
 
   private void receiveMessages(){
@@ -66,6 +69,23 @@ public final class ErisCore extends JavaPlugin {
           //TODO use text controller for this
         }).build();
         wrapper.subscribe(subscriber);
+      }
+    });
+  }
+
+  private void broadcastMessages(){
+    Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
+      @Override
+      public void run() {
+        RedisSubscriber subscriber = RedisSubscriber.builder("broadcast").withCallback(callback -> {
+          JsonNode node = callback.getPayload();
+          String message = node.get("message").asText();
+
+          for(Player player : Bukkit.getOnlinePlayers()){
+            TextController.send(player, TextType.INFORMATION, message);
+          }
+
+        }).build();
       }
     });
   }

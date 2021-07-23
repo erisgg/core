@@ -1,22 +1,26 @@
 package gg.eris.core.command;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gg.eris.commons.bukkit.command.Command;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
-import gg.eris.commons.bukkit.text.TextController;
-import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.commons.core.identifier.Identifier;
+import gg.eris.commons.core.redis.RedisPublisher;
+import gg.eris.commons.core.redis.RedisWrapper;
+import gg.eris.core.ErisCore;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
-
-import static gg.eris.commons.bukkit.text.TextController.builder;
 
 public class BroadcastCommand implements CommandProvider {
 
     public static final Identifier PERMISSION = Identifier.of("eris", "broadcast");
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private RedisWrapper wrapper;
+    public BroadcastCommand(RedisWrapper wrapper){
+        this.wrapper = wrapper;
+    }
+
 
     @Override
     public Command.Builder getCommand(CommandManager manager) {
@@ -33,8 +37,17 @@ public class BroadcastCommand implements CommandProvider {
                 .asPlayerOnly()
                 .handler(context -> {
                     String message = context.getArgument("message");
-                    TextController.Builder builder = builder(message, TextType.INFORMATION);
-                    TextController.send(builder, (Collection<Player>) Bukkit.getOnlinePlayers());
+
+                    ObjectNode node = MAPPER.createObjectNode();
+                    node.put("message", message);
+
+                    Bukkit.getScheduler().runTaskAsynchronously(ErisCore.getPlugin(ErisCore.class), new Runnable() {
+                        @Override
+                        public void run() {
+                            RedisPublisher publisher = RedisPublisher.builder(node, "message").build();
+                            wrapper.publish(publisher);
+                        }
+                    });
                 }).finished();
     }
 }
