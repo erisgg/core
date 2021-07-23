@@ -3,9 +3,11 @@ package gg.eris.core;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.eris.commons.bukkit.ErisBukkitCommons;
+import gg.eris.commons.bukkit.text.TextColor;
+import gg.eris.commons.bukkit.text.TextComponent;
 import gg.eris.commons.bukkit.text.TextController;
+import gg.eris.commons.bukkit.text.TextMessage;
 import gg.eris.commons.bukkit.text.TextType;
-import gg.eris.commons.bukkit.util.CC;
 import gg.eris.commons.core.redis.RedisSubscriber;
 import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.command.BroadcastCommand;
@@ -65,8 +67,12 @@ public final class ErisCore extends JavaPlugin {
 
           Player receiverPlayer = Bukkit.getPlayer(UUID.fromString(receiver));
 
-          receiverPlayer.sendMessage(CC.GREEN.underline() + "FROM: " + CC.GOLD.underline() + sender + " " + CC.WHITE + message);
-          //TODO use text controller for this
+          TextMessage messageComponent = TextMessage.of(TextComponent.builder("FROM: ").color(TextColor.GREEN).underlined().build(),
+                                                        TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
+                                                        TextComponent.builder(message).color(TextColor.WHITE).build());
+
+          TextController.send(receiverPlayer, TextType.INFORMATION, messageComponent.getJsonMessage());
+
         }).build();
         wrapper.subscribe(subscriber);
       }
