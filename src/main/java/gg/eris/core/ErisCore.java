@@ -71,7 +71,7 @@ public final class ErisCore extends JavaPlugin {
                                                         TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
                                                         TextComponent.builder(message).color(TextColor.WHITE).build());
 
-          TextController.send(receiverPlayer, null, messageComponent.getJsonMessage());
+          TextController.send(receiverPlayer, messageComponent.getJsonMessage());
 
         }).build();
         wrapper.subscribe(subscriber);
