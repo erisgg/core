@@ -2,15 +2,15 @@ package gg.eris.core.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import gg.eris.commons.bukkit.command.Command;
+import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
-import gg.eris.commons.core.identifier.Identifier;
 import gg.eris.commons.core.redis.RedisPublisher;
 import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.ErisCore;
+import gg.eris.core.ErisCoreIdentifiers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -19,7 +19,6 @@ import java.util.List;
 
 public class MessageCommand implements CommandProvider {
 
-    public static final Identifier PERMISSION = Identifier.of("eris", "message");
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private RedisWrapper wrapper;
 
@@ -30,11 +29,11 @@ public class MessageCommand implements CommandProvider {
 
 
     @Override
-    public Command.Builder getCommand(CommandManager manager) {
+    public Builder getCommand(CommandManager manager) {
         return manager.newCommandBuilder(
                 "message",
                 "sends a message to a player",
-                PERMISSION,
+                ErisCoreIdentifiers.MESSAGE_PERMISSION,
                 "msg"
         ).noArgsHandler(context -> {
             System.out.println("no args handler is called");
