@@ -45,9 +45,9 @@ public final class ErisCore extends JavaPlugin {
         new GameModeCreativeCommand(),
         new GameModeAdventureCommand(),
         new GameModeSpectatorCommand(),
+        new MessageCommand(wrapper),
         new BroadcastCommand(wrapper),
-        new HubCommand(),
-        new MessageCommand(wrapper)
+        new HubCommand()
     );
 
 
