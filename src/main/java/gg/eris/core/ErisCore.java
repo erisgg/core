@@ -29,7 +29,6 @@ import java.util.UUID;
 
 public final class ErisCore extends JavaPlugin {
 
-  public static HashMap<Player, BukkitTask> teleportHubList = new HashMap<>();
   private static final ObjectMapper MAPPER = new ObjectMapper();
   private RedisWrapper wrapper;
 
