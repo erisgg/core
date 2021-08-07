@@ -4,6 +4,8 @@ import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
+import gg.eris.commons.bukkit.text.TextController;
+import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.core.ErisCoreIdentifiers;
 import java.util.Locale;
 import org.bukkit.GameMode;
@@ -18,16 +20,37 @@ public abstract class SpecificGamemodeCommand implements CommandProvider {
 
   @Override
   public Builder getCommand(CommandManager manager) {
-    GameMode gameMode = getGameMode();
+    GameMode gamemode = getGameMode();
     return manager.newCommandBuilder(
         getLabel(),
-        "shorthand gamemode " + gameMode.name().toLowerCase(Locale.ROOT),
+        "shorthand gamemode " + gamemode.name().toLowerCase(Locale.ROOT),
+        getLabel(),
         ErisCoreIdentifiers.GAMEMODE_PERMISSION
-    ).noArgsHandler(context -> context.getSenderAsPlayer().setGameMode(gameMode), true)
-        .withSubCommand().argument(PlayerArgument.of("who"))
+    ).noArgsHandler(context -> {
+      context.getSenderAsPlayer().setGameMode(gamemode);
+      TextController.send(context.getSenderAsPlayer(), TextType.SUCCESS, "Gamemode updated.");
+    }, true)
+        .withSubCommand()
+        .argument(PlayerArgument.of("who"))
         .handler(context -> {
           Player player = context.getArgument("who");
-          player.setGameMode(gameMode);
+          if (player == null) {
+            TextController.send(
+                context.getCommandSender(),
+                TextType.ERROR,
+                "Player <h>{0}</h> could not be found.",
+                context.getRawArgs()[0]
+            );
+          } else {
+            player.setGameMode(gamemode);
+            TextController.send(
+                context.getCommandSender(),
+                TextType.SUCCESS,
+                "Gamemode updated for <h>{0}</h>.",
+                player.getName()
+            );
+          }
+
         }).finished();
   }
 }

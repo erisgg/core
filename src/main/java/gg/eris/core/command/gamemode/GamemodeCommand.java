@@ -5,10 +5,9 @@ import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
+import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.core.ErisCoreIdentifiers;
 import java.util.Locale;
-
-import gg.eris.commons.core.identifier.Identifier;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -18,28 +17,43 @@ public final class GamemodeCommand implements CommandProvider {
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
-        "gameMode",
+        "gamemode",
         "sets gamemode",
+        "gamemode <gamemode>",
         ErisCoreIdentifiers.GAMEMODE_PERMISSION,
         "gm"
-    ).noArgsHandler(handler -> {
-      handler.getSenderAsPlayer().sendMessage("Bad usage");
-    }).withSubCommand()
-        .argument(StringArgument.of("gameMode"))
+    ).withSubCommand()
+        .argument(StringArgument.of("gamemode"))
         .asPlayerOnly()
         .handler(context -> {
-          String gameMode = context.getArgument("gameMode");
-          GameMode gamemodeType = getType(gameMode);
-          context.getSenderAsPlayer().setGameMode(gamemodeType);
+          String gamemode = context.getArgument("gamemode");
+          GameMode gamemodeType = getType(gamemode);
+          if (gamemodeType == null) {
+            TextController.send(
+                context.getSenderAsPlayer(),
+                "Gamemode <h>{0}</h> could not be found.",
+                context.getRawArgs()[0]
+            );
+          } else {
+            context.getSenderAsPlayer().setGameMode(gamemodeType);
+          }
         }).finished()
         .withSubCommand()
         .argument(PlayerArgument.of("who"))
-        .argument(StringArgument.of("gameMode"))
+        .argument(StringArgument.of("gamemode"))
         .handler(context -> {
           Player player = context.getArgument("who");
-          String gameMode = context.getArgument("gameMode");
-          GameMode gamemodeType = getType(gameMode);
-          player.setGameMode(gamemodeType);
+          String gamemode = context.getArgument("gamemode");
+          GameMode gamemodeType = getType(gamemode);
+          if (gamemodeType == null) {
+            TextController.send(
+                player,
+                "Gamemode <h>{0}</h> could not be found.",
+                context.getRawArgs()[1]
+            );
+          } else {
+            player.setGameMode(gamemodeType);
+          }
         }).finished();
   }
 

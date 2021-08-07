@@ -16,6 +16,7 @@ public final class ErisCoreIdentifiers {
   public static final Identifier HUB_PERMISSION = permission("hub");
   public static final Identifier SETRANK_PERMISSION = permission("setrank");
   public static final Identifier UUID_PERMISSION = permission("uuid");
+  public static final Identifier BROADCAST_PERMISSION = permission("broadcast");
 
   private static Identifier permission(String name) {
     PermissionRegistry registry =
