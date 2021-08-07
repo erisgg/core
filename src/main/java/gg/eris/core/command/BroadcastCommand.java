@@ -12,7 +12,7 @@ import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.ErisCore;
 import org.bukkit.Bukkit;
 
-public class BroadcastCommand implements CommandProvider {
+public final class BroadcastCommand implements CommandProvider {
 
     public static final Identifier PERMISSION = Identifier.of("eris", "broadcast");
     private static final ObjectMapper MAPPER = new ObjectMapper();

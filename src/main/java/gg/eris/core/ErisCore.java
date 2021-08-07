@@ -13,12 +13,15 @@ import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.command.BroadcastCommand;
 import gg.eris.core.command.HubCommand;
 import gg.eris.core.command.MessageCommand;
+import gg.eris.core.command.SetRankCommand;
 import gg.eris.core.command.TeleportCommand;
+import gg.eris.core.command.UuidCommand;
 import gg.eris.core.command.gamemode.GameModeAdventureCommand;
 import gg.eris.core.command.gamemode.GameModeCreativeCommand;
 import gg.eris.core.command.gamemode.GameModeSpectatorCommand;
 import gg.eris.core.command.gamemode.GameModeSurvivalCommand;
 import gg.eris.core.command.gamemode.GamemodeCommand;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,25 +30,28 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Getter
 public final class ErisCore extends JavaPlugin {
 
-  private static final ObjectMapper MAPPER = new ObjectMapper();
+  private ErisBukkitCommons commons;
   private RedisWrapper wrapper;
 
   @Override
   public void onEnable() {
-    ErisBukkitCommons commons =
+    this.commons =
         Bukkit.getServicesManager().getRegistration(ErisBukkitCommons.class).getProvider();
-    wrapper = commons.getRedisWrapper();
-    commons.getCommandManager().registerCommands(
+    this.wrapper = this.commons.getRedisWrapper();
+    this.commons.getCommandManager().registerCommands(
         new TeleportCommand(),
+        new SetRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
+        new UuidCommand(this),
         new GamemodeCommand(),
         new GameModeSurvivalCommand(),
         new GameModeCreativeCommand(),
         new GameModeAdventureCommand(),
         new GameModeSpectatorCommand(),
-        new MessageCommand(wrapper),
-        new BroadcastCommand(wrapper),
+        new MessageCommand(this.wrapper),
+        new BroadcastCommand(this.wrapper),
         new HubCommand()
     );
 
@@ -55,44 +61,38 @@ public final class ErisCore extends JavaPlugin {
   }
 
   private void receiveMessages(){
-    Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
-      @Override
-      public void run() {
-        RedisSubscriber subscriber = RedisSubscriber.builder("message").withCallback(callback -> {
-          JsonNode node = callback.getPayload();
-          String sender = node.get("sender").asText();
-          String receiver = node.get("receiver").asText();
-          String message = node.get("message").asText();
+    Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+      RedisSubscriber subscriber = RedisSubscriber.builder("message").withCallback(callback -> {
+        JsonNode node = callback.getPayload();
+        String sender = node.get("sender").asText();
+        String receiver = node.get("receiver").asText();
+        String message = node.get("message").asText();
 
-          Player receiverPlayer = Bukkit.getPlayer(UUID.fromString(receiver));
+        Player receiverPlayer = Bukkit.getPlayer(UUID.fromString(receiver));
 
-          TextMessage messageComponent = TextMessage.of(TextComponent.builder("FROM: ").color(TextColor.GREEN).underlined().build(),
-                                                        TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
-                                                        TextComponent.builder(message).color(TextColor.WHITE).build());
+        TextMessage messageComponent = TextMessage.of(TextComponent.builder("FROM: ").color(TextColor.GREEN).underlined().build(),
+                                                      TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
+                                                      TextComponent.builder(message).color(TextColor.WHITE).build());
 
-          TextController.send(receiverPlayer, messageComponent.getJsonMessage());
+        TextController.send(receiverPlayer, messageComponent.getJsonMessage());
 
-        }).build();
-        wrapper.subscribe(subscriber);
-      }
+      }).build();
+      wrapper.subscribe(subscriber);
     });
   }
 
   private void broadcastMessages(){
-    Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
-      @Override
-      public void run() {
-        RedisSubscriber subscriber = RedisSubscriber.builder("broadcast").withCallback(callback -> {
-          JsonNode node = callback.getPayload();
-          String message = node.get("message").asText();
+    Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+      RedisSubscriber subscriber = RedisSubscriber.builder("broadcast").withCallback(callback -> {
+        JsonNode node = callback.getPayload();
+        String message = node.get("message").asText();
 
-          for(Player player : Bukkit.getOnlinePlayers()){
-            TextController.send(player, TextType.INFORMATION, message);
-          }
+        for(Player player : Bukkit.getOnlinePlayers()){
+          TextController.send(player, TextType.INFORMATION, message);
+        }
 
-        }).build();
-        wrapper.subscribe(subscriber);
-      }
+      }).build();
+      wrapper.subscribe(subscriber);
     });
   }
 

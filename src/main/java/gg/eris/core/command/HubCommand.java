@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class HubCommand implements CommandProvider {
+public final class HubCommand implements CommandProvider {
 
     private static final String LOBBY_HANDLE = "lobby";
 
