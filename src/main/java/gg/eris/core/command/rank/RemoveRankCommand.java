@@ -56,15 +56,25 @@ public final class RemoveRankCommand implements CommandProvider {
             return;
           }
 
-          this.erisPlayerManager.getOfflineDataManager().removeRank(uuid, rank);
+          boolean modified = this.erisPlayerManager.getOfflineDataManager().removeRank(uuid, rank);
 
-          TextController.send(
-              context.getCommandSender(),
-              TextType.SUCCESS,
-              "Removed the <h>{0}</h> rank to <h>{1}</h>.",
-              rank.getRawDisplay(),
-              target
-          );
+          if (modified) {
+            TextController.send(
+                context.getCommandSender(),
+                TextType.SUCCESS,
+                "Removed the <h>{0}</h> rank to <h>{1}</h>.",
+                rank.getRawDisplay(),
+                target
+            );
+          } else {
+            TextController.send(
+                context.getCommandSender(),
+                TextType.SUCCESS,
+                "No ranks have been updated. They may already have it. If not, try again.",
+                rank.getRawDisplay(),
+                target
+            );
+          }
         }).finished();
   }
 }
