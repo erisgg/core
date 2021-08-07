@@ -26,7 +26,7 @@ public final class UuidCommand implements CommandProvider {
     return manager.newCommandBuilder(
         "uuid",
         "get a player's uuid",
-        "uuid <raw><player></raw>",
+        "uuid <player>",
         ErisCoreIdentifiers.UUID_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("name"))

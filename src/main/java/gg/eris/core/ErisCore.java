@@ -1,7 +1,6 @@
 package gg.eris.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.eris.commons.bukkit.ErisBukkitCommons;
 import gg.eris.commons.bukkit.text.TextColor;
 import gg.eris.commons.bukkit.text.TextComponent;
@@ -13,7 +12,6 @@ import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.command.BroadcastCommand;
 import gg.eris.core.command.HubCommand;
 import gg.eris.core.command.MessageCommand;
-import gg.eris.core.command.SetRankCommand;
 import gg.eris.core.command.TeleportCommand;
 import gg.eris.core.command.UuidCommand;
 import gg.eris.core.command.gamemode.GameModeAdventureCommand;
@@ -21,14 +19,14 @@ import gg.eris.core.command.gamemode.GameModeCreativeCommand;
 import gg.eris.core.command.gamemode.GameModeSpectatorCommand;
 import gg.eris.core.command.gamemode.GameModeSurvivalCommand;
 import gg.eris.core.command.gamemode.GamemodeCommand;
+import gg.eris.core.command.rank.AddRankCommand;
+import gg.eris.core.command.rank.RemoveRankCommand;
+import gg.eris.core.command.rank.SetRankCommand;
+import java.util.UUID;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 @Getter
 public final class ErisCore extends JavaPlugin {
@@ -44,6 +42,8 @@ public final class ErisCore extends JavaPlugin {
     this.commons.getCommandManager().registerCommands(
         new TeleportCommand(),
         new SetRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
+        new AddRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
+        new RemoveRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
         new UuidCommand(this),
         new GamemodeCommand(),
         new GameModeSurvivalCommand(),
@@ -55,12 +55,12 @@ public final class ErisCore extends JavaPlugin {
         new HubCommand()
     );
 
-
+    // hugh code
     receiveMessages();
     broadcastMessages();
   }
 
-  private void receiveMessages(){
+  private void receiveMessages() {
     Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
       RedisSubscriber subscriber = RedisSubscriber.builder("message").withCallback(callback -> {
         JsonNode node = callback.getPayload();
@@ -70,9 +70,10 @@ public final class ErisCore extends JavaPlugin {
 
         Player receiverPlayer = Bukkit.getPlayer(UUID.fromString(receiver));
 
-        TextMessage messageComponent = TextMessage.of(TextComponent.builder("FROM: ").color(TextColor.GREEN).underlined().build(),
-                                                      TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
-                                                      TextComponent.builder(message).color(TextColor.WHITE).build());
+        TextMessage messageComponent = TextMessage
+            .of(TextComponent.builder("FROM: ").color(TextColor.GREEN).underlined().build(),
+                TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
+                TextComponent.builder(message).color(TextColor.WHITE).build());
 
         TextController.send(receiverPlayer, messageComponent.getJsonMessage());
 
@@ -81,13 +82,13 @@ public final class ErisCore extends JavaPlugin {
     });
   }
 
-  private void broadcastMessages(){
+  private void broadcastMessages() {
     Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
       RedisSubscriber subscriber = RedisSubscriber.builder("broadcast").withCallback(callback -> {
         JsonNode node = callback.getPayload();
         String message = node.get("message").asText();
 
-        for(Player player : Bukkit.getOnlinePlayers()){
+        for (Player player : Bukkit.getOnlinePlayers()) {
           TextController.send(player, TextType.INFORMATION, message);
         }
 

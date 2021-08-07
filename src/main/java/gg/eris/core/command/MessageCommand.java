@@ -30,7 +30,7 @@ public final class MessageCommand implements CommandProvider {
     return manager.newCommandBuilder(
         "message",
         "sends a message to a player",
-        "message <raw><player> <message></raw>",
+        "message <player> <message>",
         ErisCoreIdentifiers.MESSAGE_PERMISSION,
         "msg"
     ).noArgsHandler(context -> {

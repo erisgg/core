@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 // todo: messages
 public final class TeleportCommand implements CommandProvider {
 
-  private static final String USAGE = "tp <raw><player> [other]</raw>";
+  private static final String USAGE = "tp <player> [other]";
 
   @Override
   public Builder getCommand(CommandManager manager) {

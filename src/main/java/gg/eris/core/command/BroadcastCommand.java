@@ -27,7 +27,7 @@ public final class BroadcastCommand implements CommandProvider {
     return manager.newCommandBuilder(
         "broadcast",
         "broadcasts a message to all players",
-        "broadcast <raw><message></raw>",
+        "broadcast <message>",
         ErisCoreIdentifiers.BROADCAST_PERMISSION,
         "bc"
     ).withSubCommand()

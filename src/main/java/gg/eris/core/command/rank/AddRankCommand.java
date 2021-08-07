@@ -1,4 +1,4 @@
-package gg.eris.core.command;
+package gg.eris.core.command.rank;
 
 import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
@@ -14,9 +14,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class SetRankCommand implements CommandProvider {
-
-  private static final String USAGE = "setrank <raw><player> <rank></raw>";
+public final class AddRankCommand implements CommandProvider {
 
   private final ErisPlayerManager erisPlayerManager;
   private final RankRegistry registry;
@@ -24,17 +22,11 @@ public final class SetRankCommand implements CommandProvider {
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
-        "setrank",
+        "addrank",
         "returns the player to the main hub",
-        USAGE,
+        "addrank <player> <rank>",
         ErisCoreIdentifiers.SETRANK_PERMISSION
-    ).noArgsHandler(context -> {
-      TextController.send(
-          context.getSenderAsPlayer(),
-          TextType.ERROR,
-          USAGE
-      );
-    }).withSubCommand()
+    ).withSubCommand()
         .argument(StringArgument.of("target"))
         .argument(StringArgument.of("rank"))
         .handler(context -> {
@@ -64,14 +56,14 @@ public final class SetRankCommand implements CommandProvider {
             return;
           }
 
-          this.erisPlayerManager.getOfflineDataManager().setRank(uuid, rank);
+          this.erisPlayerManager.getOfflineDataManager().addRank(uuid, rank);
 
           TextController.send(
               context.getCommandSender(),
               TextType.SUCCESS,
-              "Set <h>{0}</h>'s rank to <h>{1}</h>.",
-              target,
-              rank.getRawDisplay()
+              "Added the <h>{0}</h> rank to <h>{1}</h>.",
+              rank.getRawDisplay(),
+              target
           );
         }).finished();
   }
