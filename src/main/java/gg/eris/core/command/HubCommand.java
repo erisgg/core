@@ -24,7 +24,7 @@ public final class HubCommand implements CommandProvider {
       TextController.send(
           context.getSenderAsPlayer(),
           TextType.INFORMATION,
-          "Sending you to hub..."
+          "Sending you back to the lobby..."
       );
       PlayerUtil.sendToServer(context.getSenderAsPlayer(), LOBBY_HANDLE);
     }, true);
