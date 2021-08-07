@@ -22,10 +22,10 @@ public final class RemoveRankCommand implements CommandProvider {
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
+        "removerank",
+        "removes a rank from a player",
         "removerank <player> <rank>",
-        "returns the player to the main hub",
-        "removerank <player> <rank>",
-        ErisCoreIdentifiers.SETRANK_PERMISSION
+        ErisCoreIdentifiers.REMOVERANK_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("target"))
         .argument(StringArgument.of("rank"))

@@ -25,7 +25,7 @@ public final class AddRankCommand implements CommandProvider {
         "addrank",
         "returns the player to the main hub",
         "addrank <player> <rank>",
-        ErisCoreIdentifiers.SETRANK_PERMISSION
+        ErisCoreIdentifiers.ADDRANK_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("target"))
         .argument(StringArgument.of("rank"))
