@@ -4,20 +4,19 @@ import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
-import gg.eris.commons.bukkit.player.ErisPlayerManager;
 import gg.eris.commons.bukkit.rank.Rank;
-import gg.eris.commons.bukkit.rank.RankRegistry;
 import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
+import gg.eris.core.ErisCore;
 import gg.eris.core.ErisCoreIdentifiers;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 
 @RequiredArgsConstructor
 public final class RemoveRankCommand implements CommandProvider {
 
-  private final ErisPlayerManager erisPlayerManager;
-  private final RankRegistry registry;
+  private final ErisCore plugin;
 
   @Override
   public Builder getCommand(CommandManager manager) {
@@ -32,19 +31,7 @@ public final class RemoveRankCommand implements CommandProvider {
         .handler(context -> {
           String target = context.getArgument("target");
           String rankName = context.getArgument("rank");
-          Rank rank = this.registry.get(rankName);
-
-          UUID uuid = this.erisPlayerManager.getOfflineDataManager().getUuid(target);
-
-          if (uuid == null) {
-            TextController.send(
-                context.getCommandSender(),
-                TextType.ERROR,
-                "Could not find player <h>{0}</h>.",
-                target
-            );
-            return;
-          }
+          Rank rank = this.plugin.getCommons().getRankRegistry().get(rankName);
 
           if (rank == null) {
             TextController.send(
@@ -56,25 +43,49 @@ public final class RemoveRankCommand implements CommandProvider {
             return;
           }
 
-          boolean modified = this.erisPlayerManager.getOfflineDataManager().removeRank(uuid, rank);
+          TextController.send(
+              context.getCommandSender(),
+              TextType.INFORMATION,
+              "Removing rank <h>{0}</h> from <h>{1}</h>.",
+              rank.getRawDisplay(),
+              target
+          );
 
-          if (modified) {
-            TextController.send(
-                context.getCommandSender(),
-                TextType.SUCCESS,
-                "Removed the <h>{0}</h> rank to <h>{1}</h>.",
-                rank.getRawDisplay(),
-                target
-            );
-          } else {
-            TextController.send(
-                context.getCommandSender(),
-                TextType.SUCCESS,
-                "No ranks have been updated. They may already have it. If not, try again.",
-                rank.getRawDisplay(),
-                target
-            );
-          }
+          Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            UUID uuid = this.plugin.getCommons().getErisPlayerManager().getOfflineDataManager()
+                .getUuid(target);
+
+            if (uuid == null) {
+              TextController.send(
+                  context.getCommandSender(),
+                  TextType.ERROR,
+                  "Could not find player <h>{0}</h>.",
+                  target
+              );
+              return;
+            }
+
+            boolean modified = this.plugin.getCommons().getErisPlayerManager()
+                .getOfflineDataManager().removeRank(uuid, rank);
+
+            if (modified) {
+              TextController.send(
+                  context.getCommandSender(),
+                  TextType.SUCCESS,
+                  "Removed the <h>{0}</h> rank to <h>{1}</h>.",
+                  rank.getRawDisplay(),
+                  target
+              );
+            } else {
+              TextController.send(
+                  context.getCommandSender(),
+                  TextType.SUCCESS,
+                  "No ranks have been updated. They may already have it. If not, try again.",
+                  rank.getRawDisplay(),
+                  target
+              );
+            }
+          });
         }).finished();
   }
 }

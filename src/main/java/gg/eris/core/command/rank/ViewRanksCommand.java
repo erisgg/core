@@ -9,52 +9,40 @@ import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.core.ErisCore;
 import gg.eris.core.ErisCoreIdentifiers;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.fusesource.jansi.internal.Kernel32.CONSOLE_SCREEN_BUFFER_INFO;
 
 @RequiredArgsConstructor
-public final class SetRankCommand implements CommandProvider {
+public final class ViewRanksCommand implements CommandProvider {
 
   private final ErisCore plugin;
 
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
-        "setrank",
-        "sets the only rank of a player",
-        "setrank <player> <rank>",
-        ErisCoreIdentifiers.SETRANK_PERMISSION
+        "viewranks",
+        "shows the ranks of a player",
+        "viewranks <player>",
+        ErisCoreIdentifiers.ADDRANK_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("target"))
-        .argument(StringArgument.of("rank"))
         .handler(context -> {
           String target = context.getArgument("target");
-          String rankName = context.getArgument("rank");
-          Rank rank = this.plugin.getCommons().getRankRegistry().get(rankName);
-
-          if (rank == null) {
-            TextController.send(
-                context.getCommandSender(),
-                TextType.ERROR,
-                "Rank <h>{0}</h> does not exist.",
-                rankName
-            );
-            return;
-          }
 
           TextController.send(
               context.getCommandSender(),
               TextType.INFORMATION,
-              "Setting rank for <h>{0}</h> to <h>{1}</h>.",
-              target,
-              rank.getRawDisplay()
+              "Looking up ranks for <h>{0}</h>.",
+              target
           );
 
           Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             UUID uuid = this.plugin.getCommons().getErisPlayerManager().getOfflineDataManager()
-                    .getUuid(target);
-
+                .getUuid(target);
             if (uuid == null) {
               TextController.send(
                   context.getCommandSender(),
@@ -65,15 +53,24 @@ public final class SetRankCommand implements CommandProvider {
               return;
             }
 
-            this.plugin.getCommons().getErisPlayerManager().getOfflineDataManager()
-                .setRank(uuid, rank);
+            List<Rank> ranks =
+                this.plugin.getCommons().getErisPlayerManager().getOfflineDataManager()
+                    .getRanks(uuid);
+
+            Collections.sort(ranks);
+
+            StringBuilder message = new StringBuilder("<h>")
+                .append(target)
+                .append("'s Ranks</h>");
+
+            for (Rank rank : ranks) {
+              message.append("\n - ").append(rank.getRawDisplay());
+            }
 
             TextController.send(
                 context.getCommandSender(),
                 TextType.SUCCESS,
-                "Set <h>{0}</h>'s rank to <h>{1}</h>.",
-                target,
-                rank.getRawDisplay()
+                message.toString()
             );
           });
         }).finished();

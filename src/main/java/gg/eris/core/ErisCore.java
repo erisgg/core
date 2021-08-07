@@ -22,6 +22,7 @@ import gg.eris.core.command.gamemode.GamemodeCommand;
 import gg.eris.core.command.rank.AddRankCommand;
 import gg.eris.core.command.rank.RemoveRankCommand;
 import gg.eris.core.command.rank.SetRankCommand;
+import gg.eris.core.command.rank.ViewRanksCommand;
 import java.util.UUID;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -41,9 +42,10 @@ public final class ErisCore extends JavaPlugin {
     this.wrapper = this.commons.getRedisWrapper();
     this.commons.getCommandManager().registerCommands(
         new TeleportCommand(),
-        new SetRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
-        new AddRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
-        new RemoveRankCommand(this.commons.getErisPlayerManager(), this.commons.getRankRegistry()),
+        new SetRankCommand(this),
+        new AddRankCommand(this),
+        new RemoveRankCommand(this),
+        new ViewRanksCommand(this),
         new UuidCommand(this),
         new GamemodeCommand(),
         new GameModeSurvivalCommand(),
