@@ -19,6 +19,10 @@ public final class ErisCoreIdentifiers {
   public static final Identifier ADDRANK_PERMISSION = permission("addrank");
   public static final Identifier SETRANK_PERMISSION = permission("setrank");
   public static final Identifier REMOVERANK_PERMISSION = permission("removerank");
+  public static final Identifier VIEWRANKS_PERMISSION = permission("viewranks");
+  public static final Identifier ADDPERMISSION_PERMISSION = permission("addpermission");
+  public static final Identifier REMOVEPERMISSION_PERMISSION = permission("removepermission");
+  public static final Identifier VIEWPERMISSIONS_PERMISSION = permission("viewpermissions");
   public static final Identifier BROADCAST_PERMISSION = permission("broadcast");
   public static final Identifier UUID_PERMISSION = permission("uuid");
 

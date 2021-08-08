@@ -1,12 +1,12 @@
-package gg.eris.core.command.rank;
+package gg.eris.core.command.permission;
 
 import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
-import gg.eris.commons.bukkit.rank.Rank;
 import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
+import gg.eris.commons.core.identifier.Identifier;
 import gg.eris.core.ErisCore;
 import gg.eris.core.ErisCoreIdentifiers;
 import java.util.UUID;
@@ -14,40 +14,40 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 
 @RequiredArgsConstructor
-public final class AddRankCommand implements CommandProvider {
+public final class RemovePermissionCommand implements CommandProvider {
 
   private final ErisCore plugin;
 
   @Override
   public Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(
-        "addrank",
-        "adds a rank to a player",
-        "addrank <player> <rank>",
-        ErisCoreIdentifiers.ADDRANK_PERMISSION
+        "removepermission",
+        "removes a permission from a player",
+        "removepermission <player> <permission>",
+        ErisCoreIdentifiers.REMOVEPERMISSION_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("target"))
-        .argument(StringArgument.of("rank"))
+        .argument(StringArgument.of("permission"))
         .handler(context -> {
           String target = context.getArgument("target");
-          String rankName = context.getArgument("rank");
-          Rank rank = this.plugin.getCommons().getRankRegistry().get(rankName);
+          String permission = context.getArgument("permission");
 
-          if (rank == null) {
+          if (!Identifier.isValid(permission)) {
             TextController.send(
                 context.getCommandSender(),
                 TextType.ERROR,
-                "Rank <h>{0}</h> does not exist.",
-                rankName
+                "Identifier <h>{0}</h> is not valid.",
+                permission
             );
-            return;
           }
+
+          Identifier identifier = Identifier.fromString(target);
 
           TextController.send(
               context.getCommandSender(),
               TextType.INFORMATION,
-              "Adding rank <h>{0}</h> to <h>{1}</h>.",
-              rank.getRawDisplay(),
+              "Removing permission <h>{0}</h> to <h>{1}</h>.",
+              permission,
               target
           );
 
@@ -67,23 +67,21 @@ public final class AddRankCommand implements CommandProvider {
             }
 
             boolean modified = this.plugin.getCommons().getErisPlayerManager()
-                .getOfflineDataManager().addRank(uuid, rank);
+                .getOfflineDataManager().removePermission(uuid, identifier);
 
             if (modified) {
               TextController.send(
                   context.getCommandSender(),
                   TextType.SUCCESS,
-                  "Added the <h>{0}</h> rank to <h>{1}</h>.",
-                  rank.getRawDisplay(),
+                  "Revoked permission '<h>{0}</h>' from <h>{1}</h>.",
+                  identifier.toString(),
                   target
               );
             } else {
               TextController.send(
                   context.getCommandSender(),
-                  TextType.SUCCESS,
-                  "No ranks have been updated. They may already have it. If not, try again.",
-                  rank.getRawDisplay(),
-                  target
+                  TextType.ERROR,
+                  "No permissions have been updated. They may already have it. If not, try again."
               );
             }
           });

@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.fusesource.jansi.internal.Kernel32.CONSOLE_SCREEN_BUFFER_INFO;
 
 @RequiredArgsConstructor
 public final class ViewRanksCommand implements CommandProvider {
@@ -31,7 +30,7 @@ public final class ViewRanksCommand implements CommandProvider {
         "viewranks",
         "shows the ranks of a player",
         "viewranks <player>",
-        ErisCoreIdentifiers.ADDRANK_PERMISSION
+        ErisCoreIdentifiers.VIEWRANKS_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("target"))
         .handler(context -> {
