@@ -19,6 +19,9 @@ import gg.eris.core.command.gamemode.GameModeCreativeCommand;
 import gg.eris.core.command.gamemode.GameModeSpectatorCommand;
 import gg.eris.core.command.gamemode.GameModeSurvivalCommand;
 import gg.eris.core.command.gamemode.GamemodeCommand;
+import gg.eris.core.command.permission.AddPermissionCommand;
+import gg.eris.core.command.permission.RemovePermissionCommand;
+import gg.eris.core.command.permission.ViewPermissionsCommand;
 import gg.eris.core.command.rank.AddRankCommand;
 import gg.eris.core.command.rank.RemoveRankCommand;
 import gg.eris.core.command.rank.SetRankCommand;
@@ -46,6 +49,9 @@ public final class ErisCore extends JavaPlugin {
         new AddRankCommand(this),
         new RemoveRankCommand(this),
         new ViewRanksCommand(this),
+        new AddPermissionCommand(this),
+        new RemovePermissionCommand(this),
+        new ViewPermissionsCommand(this),
         new UuidCommand(this),
         new GamemodeCommand(),
         new GameModeSurvivalCommand(),

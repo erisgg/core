@@ -39,9 +39,10 @@ public final class AddPermissionCommand implements CommandProvider {
                 "Identifier <h>{0}</h> is not valid.",
                 permission
             );
+            return;
           }
 
-          Identifier identifier = Identifier.fromString(target);
+          Identifier identifier = Identifier.fromString(permission);
 
           TextController.send(
               context.getCommandSender(),
