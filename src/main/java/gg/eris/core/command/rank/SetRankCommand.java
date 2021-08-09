@@ -53,7 +53,7 @@ public final class SetRankCommand implements CommandProvider {
 
           Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             UUID uuid = this.plugin.getCommons().getErisPlayerManager().getOfflineDataManager()
-                    .getUuid(target);
+                .getUuid(target);
 
             if (uuid == null) {
               TextController.send(
