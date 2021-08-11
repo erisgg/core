@@ -24,7 +24,7 @@ public final class UnmuteCommand implements CommandProvider {
         "unmute",
         "unmute command",
         "unmute [player]",
-        ErisCoreIdentifiers.UNBAN_PERMISSION
+        ErisCoreIdentifiers.UNMUTE_PERMISSION
     ).withSubCommand()
         .argument(StringArgument.of("target"))
         .handler(context -> {
