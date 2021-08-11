@@ -34,6 +34,14 @@ public final class ErisCoreIdentifiers {
   public static final Identifier BROADCAST_PERMISSION = permission("broadcast",
       PermissionGroup.HIGHER_STAFF);
   public static final Identifier UUID_PERMISSION = permission("uuid", PermissionGroup.HIGHER_STAFF);
+  public static final Identifier PUNISHMENT_PERMISSION = permission("punish",
+      PermissionGroup.STAFF);
+  public static final Identifier PUNISHMENT_PERMISSION_UPPER = permission("punish_upper",
+      PermissionGroup.HIGHER_STAFF);
+  public static final Identifier UNBAN_PERMISSION = permission("unban",
+      PermissionGroup.HIGHER_STAFF);
+  public static final Identifier UNMUTE_PERMISSION = permission("unmute",
+      PermissionGroup.HIGHER_STAFF);
 
   private static Identifier permission(String name, PermissionGroup group) {
     return Permission.ofDefault(PermissionRegistry.get(), name, group).getIdentifier();
