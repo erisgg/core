@@ -6,6 +6,7 @@ import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.commons.bukkit.player.ErisPlayer;
 import gg.eris.commons.bukkit.player.ErisPlayerManager;
+import gg.eris.commons.bukkit.player.nickname.PlayerNicknamePipeline;
 import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.core.ErisCoreIdentifiers;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
-public class RealNameCommand implements CommandProvider {
+public final class RealNameCommand implements CommandProvider {
 
   private final ErisPlayerManager erisPlayerManager;
 
@@ -29,7 +30,7 @@ public class RealNameCommand implements CommandProvider {
         .handler(context -> {
           Player sender = context.getSenderAsPlayer();
           String name = context.getArgument("name");
-          if (name.length() < 3 || name.length() > 16) {
+          if (!PlayerNicknamePipeline.isValidNickName(name)) {
             TextController.send(
                 sender,
                 TextType.ERROR,
