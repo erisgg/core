@@ -19,6 +19,7 @@ import gg.eris.core.command.gamemode.GameModeCreativeCommand;
 import gg.eris.core.command.gamemode.GameModeSpectatorCommand;
 import gg.eris.core.command.gamemode.GameModeSurvivalCommand;
 import gg.eris.core.command.gamemode.GamemodeCommand;
+import gg.eris.core.command.nick.NickCommand;
 import gg.eris.core.command.permission.AddPermissionCommand;
 import gg.eris.core.command.permission.RemovePermissionCommand;
 import gg.eris.core.command.permission.ViewPermissionsCommand;
@@ -50,6 +51,7 @@ public final class ErisCore extends JavaPlugin {
         new TeleportCommand(),
         new SetRankCommand(this),
         new AddRankCommand(this),
+        new NickCommand(this.commons.getErisPlayerManager()),
         new RemoveRankCommand(this),
         new ViewRanksCommand(this),
         new AddPermissionCommand(this),

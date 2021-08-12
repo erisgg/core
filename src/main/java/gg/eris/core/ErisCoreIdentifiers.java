@@ -3,6 +3,8 @@ package gg.eris.core;
 import gg.eris.commons.bukkit.permission.Permission;
 import gg.eris.commons.bukkit.permission.PermissionGroup;
 import gg.eris.commons.bukkit.permission.PermissionRegistry;
+import gg.eris.commons.bukkit.rank.Rank;
+import gg.eris.commons.bukkit.rank.RankRegistry;
 import gg.eris.commons.core.identifier.Identifier;
 import lombok.experimental.UtilityClass;
 
@@ -42,6 +44,14 @@ public final class ErisCoreIdentifiers {
       PermissionGroup.HIGHER_STAFF);
   public static final Identifier UNMUTE_PERMISSION = permission("unmute",
       PermissionGroup.HIGHER_STAFF);
+  public static final Identifier NICK_PERMISSION = permission("nick",
+      PermissionGroup.of(
+          RankRegistry.get().DEMIGOD,
+          RankRegistry.get().PARTNER,
+          RankRegistry.get().ADMIN,
+          RankRegistry.get().DEVELOPER,
+          RankRegistry.get().OWNER
+      ));
 
   private static Identifier permission(String name, PermissionGroup group) {
     return Permission.ofDefault(PermissionRegistry.get(), name, group).getIdentifier();
