@@ -6,6 +6,7 @@ import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.commons.bukkit.player.ErisPlayer;
 import gg.eris.commons.bukkit.player.nickname.PlayerNicknamePipeline;
+import gg.eris.commons.bukkit.player.nickname.PlayerNicknameSkinsList;
 import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.core.ErisCore;
@@ -46,7 +47,7 @@ public final class NickCommand implements CommandProvider {
 
             Bukkit.getScheduler().runTask(this.plugin, () -> {
               ErisPlayer player = this.plugin.getCommons().getErisPlayerManager().getPlayer(sender);
-              player.getNicknameProfile().setNickName(name, null);
+              player.getNicknameProfile().setNickName(name, PlayerNicknameSkinsList.getRandomSkin());
               TextController.send(
                   player,
                   TextType.SUCCESS,
@@ -55,8 +56,6 @@ public final class NickCommand implements CommandProvider {
               );
             });
           });
-
-
         }).finished();
   }
 }
