@@ -5,18 +5,19 @@ import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.commons.bukkit.player.ErisPlayer;
-import gg.eris.commons.bukkit.player.ErisPlayerManager;
+import gg.eris.commons.bukkit.player.nickname.PlayerNicknamePipeline;
 import gg.eris.commons.bukkit.text.TextController;
 import gg.eris.commons.bukkit.text.TextType;
+import gg.eris.core.ErisCore;
 import gg.eris.core.ErisCoreIdentifiers;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.w3c.dom.Text;
 
 @RequiredArgsConstructor
 public final class NickCommand implements CommandProvider {
 
-  private final ErisPlayerManager erisPlayerManager;
+  private final ErisCore plugin;
 
   @Override
   public Builder getCommand(CommandManager manager) {
@@ -32,18 +33,30 @@ public final class NickCommand implements CommandProvider {
         .handler(context -> {
           Player sender = context.getSenderAsPlayer();
           String name = context.getArgument("name");
-          if (name.length() < 3 || name.length() > 16) {
-            TextController.send(
-                sender,
-                TextType.ERROR,
-                "The name '<h>{0}</h>' is not a valid name.",
-                name
-            );
-            return;
-          }
+          Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            if (!PlayerNicknamePipeline.isValidNickName(name)) {
+              TextController.send(
+                  sender,
+                  TextType.ERROR,
+                  "The name '<h>{0}</h>' is not a valid name.",
+                  name
+              );
+              return;
+            }
 
-          ErisPlayer player = this.erisPlayerManager.getPlayer(sender);
-          player.getNicknameProfile().setNickName(name, null);
+            Bukkit.getScheduler().runTask(this.plugin, () -> {
+              ErisPlayer player = this.plugin.getCommons().getErisPlayerManager().getPlayer(sender);
+              player.getNicknameProfile().setNickName(name, null);
+              TextController.send(
+                  player,
+                  TextType.SUCCESS,
+                  "You have nicked as '<h>{0}</h>'.",
+                  name
+              );
+            });
+          });
+
+
         }).finished();
   }
 }

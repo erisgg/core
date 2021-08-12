@@ -53,7 +53,7 @@ public final class ErisCore extends JavaPlugin {
         new TeleportCommand(),
         new SetRankCommand(this),
         new AddRankCommand(this),
-        new NickCommand(this.commons.getErisPlayerManager()),
+        new NickCommand(this),
         new UnnickCommand(this.commons.getErisPlayerManager()),
         new RealNameCommand(this.commons.getErisPlayerManager()),
         new RemoveRankCommand(this),
