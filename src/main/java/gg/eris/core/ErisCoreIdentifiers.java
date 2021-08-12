@@ -44,14 +44,11 @@ public final class ErisCoreIdentifiers {
       PermissionGroup.HIGHER_STAFF);
   public static final Identifier UNMUTE_PERMISSION = permission("unmute",
       PermissionGroup.HIGHER_STAFF);
-  public static final Identifier NICK_PERMISSION = permission("nick",
-      PermissionGroup.of(
-          RankRegistry.get().DEMIGOD,
-          RankRegistry.get().PARTNER,
-          RankRegistry.get().ADMIN,
-          RankRegistry.get().DEVELOPER,
-          RankRegistry.get().OWNER
-      ));
+  public static final Identifier NICK_PERMISSION = permission("nick", PermissionGroup.DONOR_HIGHEST);
+  public static final Identifier UNNICK_PERMISSION = permission("unnick",
+      PermissionGroup.DONOR_HIGHEST);
+  public static final Identifier REALNAME_PERMISSION = permission("realname",
+      PermissionGroup.STAFF);
 
   private static Identifier permission(String name, PermissionGroup group) {
     return Permission.ofDefault(PermissionRegistry.get(), name, group).getIdentifier();
