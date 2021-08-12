@@ -21,7 +21,6 @@ import org.bukkit.entity.Player;
 public final class NickCommand implements CommandProvider {
 
   private final ErisCore plugin;
-  private final RedisWrapper wrapper;
 
   @Override
   public Builder getCommand(CommandManager manager) {
