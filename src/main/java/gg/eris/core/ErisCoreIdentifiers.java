@@ -3,8 +3,6 @@ package gg.eris.core;
 import gg.eris.commons.bukkit.permission.Permission;
 import gg.eris.commons.bukkit.permission.PermissionGroup;
 import gg.eris.commons.bukkit.permission.PermissionRegistry;
-import gg.eris.commons.bukkit.rank.Rank;
-import gg.eris.commons.bukkit.rank.RankRegistry;
 import gg.eris.commons.core.identifier.Identifier;
 import lombok.experimental.UtilityClass;
 

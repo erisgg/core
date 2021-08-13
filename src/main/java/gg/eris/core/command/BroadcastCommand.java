@@ -10,6 +10,8 @@ import gg.eris.commons.core.redis.RedisPublisher;
 import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.ErisCore;
 import gg.eris.core.ErisCoreIdentifiers;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 
 public final class BroadcastCommand implements CommandProvider {
@@ -32,17 +34,16 @@ public final class BroadcastCommand implements CommandProvider {
         "bc"
     ).withSubCommand()
         .variableArgument(StringArgument.of("message"), 1)
-        .asPlayerOnly()
         .handler(context -> {
-              String message = context.getArgument("message");
+              List<String> messages = context.getArgument("message");
+              String message = StringUtils.join(messages, " ");
 
               ObjectNode node = MAPPER.createObjectNode()
                   .put("message", message);
 
-              Bukkit.getScheduler()
-                  .runTaskAsynchronously(ErisCore.getPlugin(ErisCore.class), () -> {
-                    RedisPublisher publisher = RedisPublisher.builder(node, "message").build();
-                    wrapper.publish(publisher);
+              Bukkit.getScheduler().runTaskAsynchronously(ErisCore.getPlugin(ErisCore.class), () -> {
+                    RedisPublisher publisher = RedisPublisher.builder(node, "broadcast").build();
+                    this.wrapper.publish(publisher);
                   });
             }
         ).finished();

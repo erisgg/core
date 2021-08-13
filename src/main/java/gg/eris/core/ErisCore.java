@@ -70,7 +70,7 @@ public final class ErisCore extends JavaPlugin {
         new GameModeCreativeCommand(),
         new GameModeAdventureCommand(),
         new GameModeSpectatorCommand(),
-        new MessageCommand(this.wrapper),
+        new MessageCommand(this.getCommons().getErisPlayerManager(), this.wrapper),
         new BroadcastCommand(this.wrapper),
         new HubCommand()
     );
@@ -88,15 +88,24 @@ public final class ErisCore extends JavaPlugin {
         String receiver = node.get("receiver").asText();
         String message = node.get("message").asText();
 
-        Player receiverPlayer = Bukkit.getPlayer(UUID.fromString(receiver));
+        Player to = null;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+          if (player.getName().equalsIgnoreCase(receiver)) {
+            to = player;
+            break;
+          }
+        }
+
+        if (to == null) {
+          return;
+        }
 
         TextMessage messageComponent = TextMessage
-            .of(TextComponent.builder("FROM: ").color(TextColor.GREEN).underlined().build(),
-                TextComponent.builder(sender + " ").color(TextColor.YELLOW).underlined().build(),
+            .of(TextComponent.builder("FROM ").color(TextColor.GREEN).build(),
+                TextComponent.builder(sender + ": ").color(TextColor.YELLOW).build(),
                 TextComponent.builder(message).color(TextColor.WHITE).build());
 
-        TextController.send(receiverPlayer, messageComponent.getJsonMessage());
-
+        TextController.send(to, messageComponent);
       }).build();
       wrapper.subscribe(subscriber);
     });
@@ -107,13 +116,12 @@ public final class ErisCore extends JavaPlugin {
       RedisSubscriber subscriber = RedisSubscriber.builder("broadcast").withCallback(callback -> {
         JsonNode node = callback.getPayload();
         String message = node.get("message").asText();
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-          TextController.send(player, TextType.INFORMATION, message);
-        }
-
+        TextMessage announcement =
+            TextController.parse("\n \n<col=yellow><b>Announcement</b> " + TextController.ARROW
+                + " <col=gold>{0}</col>\n \n", message);
+        TextController.broadcastToServer(announcement);
       }).build();
-      wrapper.subscribe(subscriber);
+      this.wrapper.subscribe(subscriber);
     });
   }
 

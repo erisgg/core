@@ -40,6 +40,9 @@ public final class PunishCommand implements CommandProvider {
           String typeRaw = context.getArgument("type");
           PunishmentType type = PunishmentType.fromLabel(typeRaw);
           int severity = context.getArgument("severity");
+          Player senderHandle = context.getSenderAsPlayer();
+          ErisPlayer sender =
+              this.plugin.getCommons().getErisPlayerManager().getPlayer(senderHandle);
 
           if (type == null) {
             TextController.send(
@@ -59,14 +62,18 @@ public final class PunishCommand implements CommandProvider {
                 "Invalid severity. Severity must be <h>between or equal to 1</h> and <h>4</h>."
             );
             return;
+          } else if (severity == 1 && type == PunishmentType.IN_GAME) {
+            TextController.send(
+                context.getCommandSender(),
+                TextType.ERROR,
+                "Invalid severity. Severity must be <h>between or equal to 2</h> and <h>{0}</h>.",
+                sender.hasPermission(ErisCoreIdentifiers.PUNISHMENT_PERMISSION_UPPER) ? 4 : 3
+            );
           }
 
           if (severity == 4) {
             if (context.getCommandSender() instanceof Player) {
-              Player player = context.getSenderAsPlayer();
-              ErisPlayer erisPlayer =
-                  this.plugin.getCommons().getErisPlayerManager().getPlayer(player);
-              if (!erisPlayer.hasPermission(ErisCoreIdentifiers.PUNISHMENT_PERMISSION_UPPER)) {
+              if (!sender.hasPermission(ErisCoreIdentifiers.PUNISHMENT_PERMISSION_UPPER)) {
                 TextController.send(
                     context.getCommandSender(),
                     TextType.ERROR,
