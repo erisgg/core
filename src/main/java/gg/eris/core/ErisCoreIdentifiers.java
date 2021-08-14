@@ -52,7 +52,13 @@ public final class ErisCoreIdentifiers {
       )
   );
   public static final Identifier UNNICK_PERMISSION = permission("unnick",
-      PermissionGroup.DONOR_HIGHEST);
+      PermissionGroup.of(
+          RankRegistry.get().OWNER,
+          RankRegistry.get().DEVELOPER,
+          RankRegistry.get().DEMIGOD,
+          RankRegistry.get().PARTNER
+      )
+  );
   public static final Identifier REALNAME_PERMISSION = permission("realname",
       PermissionGroup.STAFF);
 
