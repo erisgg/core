@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import gg.eris.commons.bukkit.command.Command.Builder;
 import gg.eris.commons.bukkit.command.CommandManager;
 import gg.eris.commons.bukkit.command.CommandProvider;
-import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.commons.bukkit.player.ErisPlayer;
 import gg.eris.commons.bukkit.player.ErisPlayerManager;
+import gg.eris.commons.bukkit.player.punishment.PunishmentDurations;
 import gg.eris.commons.bukkit.text.TextColor;
 import gg.eris.commons.bukkit.text.TextComponent;
 import gg.eris.commons.bukkit.text.TextController;
@@ -56,13 +56,20 @@ public final class MessageCommand implements CommandProvider {
 
           long muteDuration = player.getPunishmentProfile().getMuteDuration();
           if (muteDuration != 0L) {
-            TextController.send(
-                player,
-                TextType.ERROR,
-                "You are currently <h>muted</h>. Your mute will expire in <h>{0}</h>.",
-                Time.toLongDisplayTime(muteDuration, TimeUnit.MILLISECONDS)
-            );
-
+            if (muteDuration == PunishmentDurations.INDEFINITE) {
+              TextController.send(
+                  player,
+                  TextType.ERROR,
+                  "You are <h>permanently muted</h>."
+              );
+            } else {
+              TextController.send(
+                  player,
+                  TextType.ERROR,
+                  "You are currently <h>muted</h>. Your mute will expire in <h>{0}</h>.",
+                  Time.toLongDisplayTime(muteDuration, TimeUnit.MILLISECONDS)
+              );
+            }
             return;
           }
 
