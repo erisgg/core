@@ -3,6 +3,7 @@ package gg.eris.core;
 import gg.eris.commons.bukkit.permission.Permission;
 import gg.eris.commons.bukkit.permission.PermissionGroup;
 import gg.eris.commons.bukkit.permission.PermissionRegistry;
+import gg.eris.commons.bukkit.rank.RankRegistry;
 import gg.eris.commons.core.identifier.Identifier;
 import lombok.experimental.UtilityClass;
 
@@ -42,7 +43,14 @@ public final class ErisCoreIdentifiers {
       PermissionGroup.HIGHER_STAFF);
   public static final Identifier UNMUTE_PERMISSION = permission("unmute",
       PermissionGroup.HIGHER_STAFF);
-  public static final Identifier NICK_PERMISSION = permission("nick", PermissionGroup.DONOR_HIGHEST);
+  public static final Identifier NICK_PERMISSION = permission("nick",
+      PermissionGroup.of(
+          RankRegistry.get().OWNER,
+          RankRegistry.get().DEVELOPER,
+          RankRegistry.get().DEMIGOD,
+          RankRegistry.get().PARTNER
+      )
+  );
   public static final Identifier UNNICK_PERMISSION = permission("unnick",
       PermissionGroup.DONOR_HIGHEST);
   public static final Identifier REALNAME_PERMISSION = permission("realname",
