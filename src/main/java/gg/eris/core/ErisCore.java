@@ -19,6 +19,7 @@ import gg.eris.core.command.gamemode.GameModeCreativeCommand;
 import gg.eris.core.command.gamemode.GameModeSpectatorCommand;
 import gg.eris.core.command.gamemode.GameModeSurvivalCommand;
 import gg.eris.core.command.gamemode.GamemodeCommand;
+import gg.eris.core.command.knockback.KnockbackCommand;
 import gg.eris.core.command.nick.NickCommand;
 import gg.eris.core.command.nick.RealNameCommand;
 import gg.eris.core.command.nick.UnnickCommand;
@@ -70,6 +71,7 @@ public final class ErisCore extends JavaPlugin {
         new GameModeCreativeCommand(),
         new GameModeAdventureCommand(),
         new GameModeSpectatorCommand(),
+        new KnockbackCommand(),
         new MessageCommand(this.getCommons().getErisPlayerManager(), this.wrapper),
         new BroadcastCommand(this.wrapper),
         new HubCommand()
