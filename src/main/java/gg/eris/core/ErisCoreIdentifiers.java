@@ -63,8 +63,12 @@ public final class ErisCoreIdentifiers {
   public static final Identifier REALNAME_PERMISSION = permission("realname",
       PermissionGroup.STAFF);
 
-  public transient final Identifier KNOCKBACK_PERMISSION =
+  public static final Identifier KNOCKBACK_PERMISSION =
       permission("knockback", PermissionGroup.OWNER);
+
+  public static final Identifier SEND_PERMISSION =
+      permission("send", PermissionGroup.HIGHER_STAFF);
+
 
   private static Identifier permission(String name, PermissionGroup group) {
     return Permission.ofDefault(PermissionRegistry.get(), name, group).getIdentifier();
