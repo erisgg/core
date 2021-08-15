@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 
 public final class SendCommand implements CommandProvider {
 
-  private static final ObjectMapper MAPPER = new ObjectMapper();
-
   @Override
   public Command.Builder getCommand(CommandManager manager) {
     return manager.newCommandBuilder(

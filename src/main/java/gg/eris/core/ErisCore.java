@@ -12,6 +12,7 @@ import gg.eris.commons.core.redis.RedisWrapper;
 import gg.eris.core.command.BroadcastCommand;
 import gg.eris.core.command.HubCommand;
 import gg.eris.core.command.MessageCommand;
+import gg.eris.core.command.SendCommand;
 import gg.eris.core.command.TeleportCommand;
 import gg.eris.core.command.UuidCommand;
 import gg.eris.core.command.gamemode.GameModeAdventureCommand;
@@ -74,6 +75,7 @@ public final class ErisCore extends JavaPlugin {
         new KnockbackCommand(),
         new MessageCommand(this.getCommons().getErisPlayerManager(), this.wrapper),
         new BroadcastCommand(this.wrapper),
+        new SendCommand(),
         new HubCommand()
     );
 
