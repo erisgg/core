@@ -18,10 +18,55 @@ public final class KnockbackCommand implements CommandProvider {
     return manager.newCommandBuilder(
         "knockback",
         "modifies knockback",
-        "knockback [type] [value]",
+        "knockback <type> [value]",
         ErisCoreIdentifiers.KNOCKBACK_PERMISSION,
         "kb"
     ).withSubCommand()
+        .argument(StringArgument.of("type"))
+        .handler(context -> {
+          String type = context.getArgument("type");
+          type = type.toLowerCase(Locale.ROOT);
+
+          double value;
+
+          switch (type) {
+            case "friction":
+              value = ErisSpigotKnockbackSettings.KNOCKBACK_FRICTION;
+              break;
+            case "horizontal":
+              value = ErisSpigotKnockbackSettings.KNOCKBACK_HORIZONTAL;
+              break;
+            case "vertical":
+              value = ErisSpigotKnockbackSettings.KNOCKBACK_VERTICAL;
+              break;
+            case "extra_horizontal":
+              value = ErisSpigotKnockbackSettings.KNOCKBACK_EXTRA_HORIZONTAL;
+              break;
+            case "extra_vertical":
+              value = ErisSpigotKnockbackSettings.KNOCKBACK_EXTRA_VERTICAL;
+              break;
+            case "vertical_limit":
+              value = ErisSpigotKnockbackSettings.VERTICAL_LIMIT;
+              break;
+            default:
+              TextController.send(
+                  context.getCommandSender(),
+                  TextType.INFORMATION,
+                  "Type <h>{0}</h> type cannot be found.",
+                  type
+              );
+              return;
+          }
+
+          TextController.send(
+              context.getCommandSender(),
+              TextType.INFORMATION,
+              "Value of <h>{0}</h> is <h>{1}</h>.",
+              type,
+              value
+          );
+        }).finished()
+        .withSubCommand()
         .argument(StringArgument.of("type"))
         .argument(DoubleArgument.of("value"))
         .handler(context -> {
