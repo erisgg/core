@@ -47,6 +47,7 @@ public final class ErisCoreIdentifiers {
       PermissionGroup.of(
           RankRegistry.get().OWNER,
           RankRegistry.get().DEVELOPER,
+          RankRegistry.get().ADMIN,
           RankRegistry.get().DEMIGOD,
           RankRegistry.get().PARTNER
       )
