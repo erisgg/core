@@ -6,6 +6,7 @@ import gg.eris.commons.bukkit.command.CommandProvider;
 import gg.eris.commons.bukkit.command.argument.PlayerArgument;
 import gg.eris.commons.bukkit.command.argument.StringArgument;
 import gg.eris.commons.bukkit.text.TextController;
+import gg.eris.commons.bukkit.text.TextType;
 import gg.eris.core.ErisCoreIdentifiers;
 import java.util.Locale;
 import org.bukkit.GameMode;
@@ -31,6 +32,7 @@ public final class GamemodeCommand implements CommandProvider {
           if (gamemodeType == null) {
             TextController.send(
                 context.getSenderAsPlayer(),
+                TextType.ERROR,
                 "Gamemode <h>{0}</h> could not be found.",
                 context.getRawArgs()[0]
             );
