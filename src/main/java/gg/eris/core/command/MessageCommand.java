@@ -42,7 +42,7 @@ public final class MessageCommand implements CommandProvider {
         "sends a message to a player",
         "message <player> <message>",
         ErisCoreIdentifiers.MESSAGE_PERMISSION,
-        "msg"
+        "msg", "w", "whisper"
     ).withSubCommand()
         .argument(StringArgument.of("player"))
         .variableArgument(StringArgument.of("message"), 1)
