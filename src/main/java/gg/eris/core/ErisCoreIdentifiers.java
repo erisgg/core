@@ -48,16 +48,17 @@ public final class ErisCoreIdentifiers {
           RankRegistry.get().OWNER,
           RankRegistry.get().DEVELOPER,
           RankRegistry.get().ADMIN,
-          RankRegistry.get().DEMIGOD,
-          RankRegistry.get().PARTNER
+          RankRegistry.get().PARTNER,
+          RankRegistry.get().DEMIGOD
       )
   );
   public static final Identifier UNNICK_PERMISSION = permission("unnick",
       PermissionGroup.of(
           RankRegistry.get().OWNER,
           RankRegistry.get().DEVELOPER,
-          RankRegistry.get().DEMIGOD,
-          RankRegistry.get().PARTNER
+          RankRegistry.get().ADMIN,
+          RankRegistry.get().PARTNER,
+          RankRegistry.get().DEMIGOD
       )
   );
   public static final Identifier REALNAME_PERMISSION = permission("realname",
